@@ -1,0 +1,137 @@
+seq = 1000000000000000
+CREATE TABLE account
+(
+  id bigserial PRIMARY KEY,
+  deleted boolean DEFAULT false,
+  create_time timestamp without time zone DEFAULT now(),
+  update_time timestamp without time zone,
+  role character varying(20) NOT NULL,
+  locale character varying(5) DEFAULT 'ko_KR',
+  login_id character varying(128) NOT NULL UNIQUE,
+  password character varying(128) NOT NULL,
+  manager_name character varying(128) NOT NULL,
+  object_name character varying(128),
+  email character varying(50),
+  phone character varying(15)
+)
+insert into account (role, login_id, password, manager_name) values ('ADMIN', 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'admin')
+insert into account (role, login_id, password, manager_name) values ('AGENCY', 'ag', '9aaf680776b98fd17fe63376120525cbcdffc01bc66f71df96b6e90b87f39b86', 'ag')
+insert into account (role, login_id, password, manager_name) values ('ADVERTISER', 'adv', '0a526a90a85596dcb3669fd86963422969edbbf7c4752492d780b78e6355d4ee', 'adv')
+
+
+CREATE TABLE account_agency
+(
+  account_id bigint PRIMARY KEY,
+  business_number character varying(50),
+  business_file character varying(50),
+  manage_payment character varying(50),
+  manage_email character varying(50),
+  manage_phone character varying(15),
+  commission int,
+  credit_amount int,
+  notification int,
+  notification_option int
+)
+insert into account_agency (account_id) values (1000000000000002)
+
+
+adaccount_id = 20000000000000000
+CREATE TABLE account_advertiser
+(
+  account_id bigint PRIMARY KEY,
+  agency_id bigint NOT NULL,
+  adaccount_id bigserial NOT NULL UNIQUE,
+  band_link character varying(300),
+  industry character varying(50),
+  website_link character varying(300),
+  address character varying(300)
+)
+insert into account_advertiser (account_id, agency_id) values (1000000000000003, 1000000000000002)
+
+
+
+
+id = 21000000000000000
+CREATE TABLE ad_campaign
+(
+  id bigserial NOT NULL,
+  name character varying(128) NOT NULL,
+  campaign_status integer NOT NULL DEFAULT 0,
+  budget bigint NOT NULL DEFAULT 100,
+  delivery integer NOT NULL DEFAULT 0,
+  band_id bigint NOT NULL DEFAULT 0,
+  campaign_type integer NOT NULL DEFAULT 0,
+  create_time timestamp without time zone NOT NULL DEFAULT now(),
+  update_time timestamp without time zone,
+  start_time timestamp without time zone,
+  end_time timestamp without time zone,
+  schedule_type integer NOT NULL DEFAULT 0,
+  ad_account_id bigint NOT NULL DEFAULT 20000000000000001::bigint,
+  CONSTRAINT ad_campaign_pkey PRIMARY KEY (id)
+)
+
+
+id = 22000000000000000
+CREATE TABLE ad_audience
+(
+  id bigserial NOT NULL,
+  name character varying(128) NOT NULL,
+  audience_status integer NOT NULL DEFAULT 0,
+  bid integer NOT NULL DEFAULT 100,
+  target_id bigint NOT NULL,
+  campaign_id bigint NOT NULL,
+  create_time timestamp without time zone NOT NULL DEFAULT now(),
+  update_time timestamp without time zone,
+  ad_account_id bigint NOT NULL,
+  CONSTRAINT ad_audience_pkey PRIMARY KEY (id)
+)
+
+
+
+id = 23000000000000000
+CREATE TABLE ad_item
+(
+  id bigserial NOT NULL,
+  name character varying(128) NOT NULL,
+  ad_status integer NOT NULL DEFAULT 0,
+  campaign_id bigint NOT NULL,
+  audience_id bigint NOT NULL,
+  creative_id bigint NOT NULL,
+  create_time timestamp without time zone NOT NULL DEFAULT now(),
+  update_time timestamp without time zone,
+  ad_account_id bigint NOT NULL,
+  CONSTRAINT ad_item_pkey PRIMARY KEY (id)
+)
+
+
+id = 30000000000000000
+CREATE TABLE targeting_info
+(
+  id bigserial NOT NULL,
+  min_age integer NOT NULL,
+  max_age integer NOT NULL,
+  gender integer NOT NULL,
+  CONSTRAINT targeting_info_pkey PRIMARY KEY (id)
+)
+
+
+
+id = 24000000000000000
+CREATE TABLE ad_creative
+(
+  id bigserial NOT NULL,
+  name character varying(128) NOT NULL,
+  creative_status integer NOT NULL DEFAULT 0,
+  body character varying(512) NOT NULL,
+  call_to_action_type integer NOT NULL DEFAULT 0,
+  image_url character varying(512) NOT NULL,
+  link_url character varying(512) NOT NULL,
+  link_title character varying(512) NOT NULL,
+  link_body character varying(512) NOT NULL,
+  link_caption character varying(512) NOT NULL,
+  ad_account_id integer NOT NULL DEFAULT 0,
+  user_account_id integer NOT NULL DEFAULT 0,
+  create_time timestamp without time zone NOT NULL DEFAULT now(),
+  update_time timestamp without time zone,
+  CONSTRAINT ad_creative_pkey PRIMARY KEY (id)
+)

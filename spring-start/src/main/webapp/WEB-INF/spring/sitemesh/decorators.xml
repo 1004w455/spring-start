@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/WEB-INF/view/sitemesh">
+
+
+	<!-- 중요한 점은 클라이언트의 요청이 sitemesh필터에 진입하게 되면 decorators.xml에서 해당 요청패턴을 찾는다. 
+	만약에 decorators.xml에 패턴을 정의하지 않으면 요청을 빨리 처리하지 못하고 느려지기 때문에...사용하지 않든지 사용 하든지 필터를 타는 요청은 꼭 패턴에 정의 해줘야된다.(<decorator>,<excludes>) -->
+
+	<!-- 이것은 sitemesh를 사용하지 않을 패턴을 지정한다 -->
+	<excludes>
+		<pattern>/*.ajax*</pattern>
+		<pattern>/*.popup*</pattern>
+		<pattern>/login*</pattern>
+	</excludes>
+
+	<decorator name="header" page="header.jsp" />
+	<decorator name="footer" page="footer.jsp" />
+	<decorator name="left" page="left.jsp"/>
+	
+	<decorator name="main" title="RPS Service" page="main.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+
+
+</decorators>
